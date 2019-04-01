@@ -12,6 +12,8 @@ import javafx.stage.FileChooser;
 
 public class FileHandler {
 	
+	public static Hashtable <String, Integer> hash;
+	
 	public static File fileOpenChooser() {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Open File");
@@ -44,7 +46,7 @@ public class FileHandler {
 		ArrayList<DnaSequence> list = new ArrayList<DnaSequence>();
 		try {
 			Scanner reader = new Scanner(fileOpenChooser());
-			Hashtable<String, Integer> hash = new Hashtable<String, Integer>();
+			hash = new Hashtable<String, Integer>();
 			while(reader.hasNextLine()) {
 				String temp = reader.nextLine();
 				if(hash.containsKey(temp)) {

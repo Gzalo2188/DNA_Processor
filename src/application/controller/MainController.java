@@ -17,6 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
@@ -25,7 +26,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 public class MainController implements EventHandler<ActionEvent>, Initializable{
 	
 	@FXML
-	private TableView<DnaSequence> table;
+	private TableView<DnaSequence> table, mTable;
 	
     @FXML
     private TableColumn<DnaSequence, String> dnaCol;
@@ -38,6 +39,9 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
 
     @FXML
     private Button saveFile;
+    
+    @FXML
+    private TextField textField;
     
     private Alert alert;
 
@@ -60,7 +64,38 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
 	}
 	@Override
 	public void handle(ActionEvent event) {
+		this.mTable.getItems().clear();
+		String enteredString = this.textField.getText();
+		ArrayList<DnaSequence> list = new ArrayList<DnaSequence>(this.table.getItems());
 
+        if(this.table.getItems().size() == 0){
+    		this.alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("ERROR");
+    		alert.setHeaderText(null);
+    		alert.setContentText("An error has occured. Please make sure that you've loaded data.");
+    		alert.showAndWait();
+        }
+        else if(!(FileHandler.hash.containsKey(enteredString))){
+    		alert.setTitle("ERROR");
+    		alert.setHeaderText(null);
+    		alert.setContentText("An error has occured. The DNA squenece you enterd does not exist within this set");
+    		alert.showAndWait();
+        }
+        else{
+        	DnaSequence searchedDna = new DnaSequence(enteredString, FileHandler.hash.get(enteredString));
+        	this.mTable.getItems().add(searchedDna);
+        	for(DnaSequence dna : list){
+        		int mismatch = 0;
+        		for(int i = 0; i < dna.getDna().length(); i++){
+        			if(!(dna.getDna().charAt(i) == enteredString.charAt(i))){
+        				mismatch++;
+        			}
+        		}
+        		if(mismatch == 1){
+        			this.mTable.getItems().add(dna);
+        		}
+        	}
+        }
 	}
 	
     public void openFileChooser(ActionEvent event) {
