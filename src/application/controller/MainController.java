@@ -26,13 +26,21 @@ import javafx.scene.control.cell.TextFieldTableCell;
 public class MainController implements EventHandler<ActionEvent>, Initializable{
 	
 	@FXML
-	private TableView<DnaSequence> table, mTable;
+	private TableView<DnaSequence> table;
+	
+	@FXML TableView<DnaSequence> mutationTable;
 	
     @FXML
     private TableColumn<DnaSequence, String> dnaCol;
+    
+    @FXML
+    private TableColumn<DnaSequence, String> mDnaCol;
 
     @FXML
     private TableColumn<DnaSequence, Integer> countCol;
+    
+    @FXML
+    private TableColumn<DnaSequence, Integer> mCountCol;
 
     @FXML
     private Button openFile;
@@ -52,19 +60,23 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
     	// Set up columns
     	this.dnaCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, String>("dna"));
+    	this.mDnaCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, String>("dna"));
     	this.countCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, Integer>("count"));
+    	this.mCountCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, Integer>("count"));
 		
     	//Alignment
     	this.countCol.setStyle("-fx-alignment: CENTER;");
-    	
+      	this.mCountCol.setStyle("-fx-alignment: CENTER;");
+      	
     	//Alows the table to be elitable.
-		this.table.setEditable(true);
+		this.table.setEditable(true);		
+		this.mutationTable.setEditable(true);
 		this.dnaCol.setCellFactory(TextFieldTableCell.forTableColumn());
-    	
+		this.mDnaCol.setCellFactory(TextFieldTableCell.forTableColumn());
 	}
 	@Override
 	public void handle(ActionEvent event) {
-		this.mTable.getItems().clear();
+		this.mutationTable.getItems().clear();
 		String enteredString = this.textField.getText();
 		ArrayList<DnaSequence> list = new ArrayList<DnaSequence>(this.table.getItems());
 
@@ -76,6 +88,7 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
     		alert.showAndWait();
         }
         else if(!(FileHandler.hash.containsKey(enteredString))){
+        	this.alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("ERROR");
     		alert.setHeaderText(null);
     		alert.setContentText("An error has occured. The DNA squenece you enterd does not exist within this set");
@@ -83,7 +96,7 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
         }
         else{
         	DnaSequence searchedDna = new DnaSequence(enteredString, FileHandler.hash.get(enteredString));
-        	this.mTable.getItems().add(searchedDna);
+        	this.mutationTable.getItems().add(searchedDna);
         	for(DnaSequence dna : list){
         		int mismatch = 0;
         		for(int i = 0; i < dna.getDna().length(); i++){
@@ -92,7 +105,7 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
         			}
         		}
         		if(mismatch == 1){
-        			this.mTable.getItems().add(dna);
+        			this.mutationTable.getItems().add(dna);
         		}
         	}
         }
@@ -114,6 +127,20 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
     
     public void saveFileChooser(ActionEvent event) {
     	ArrayList<DnaSequence> list = new ArrayList<DnaSequence>(this.table.getItems());
+    	try {
+    		FileHandler.saveData(list);
+    	}
+    	catch(NullPointerException e) {
+    		this.alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("ERROR");
+    		alert.setHeaderText(null);
+    		alert.setContentText("Please choose a file location.");
+    		alert.showAndWait();
+    	}
+    }
+    
+    public void mSaveFileChooser(ActionEvent event) {
+    	ArrayList<DnaSequence> list = new ArrayList<DnaSequence>(this.mutationTable.getItems());
     	try {
     		FileHandler.saveData(list);
     	}
