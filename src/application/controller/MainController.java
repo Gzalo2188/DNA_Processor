@@ -3,11 +3,8 @@ package application.controller;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import application.model.DnaSequence;
 import application.model.FileHandler;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -53,8 +50,6 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
     
     private Alert alert;
 
-    private ObservableList<DnaSequence> dnaList = FXCollections.observableArrayList();
-    
 
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
