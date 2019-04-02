@@ -19,7 +19,7 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("view/Main.fxml"));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.setTitle("DNA Processor");
-			primaryStage.getIcons().add(new Image(new File("assets/dna.png").toURI().toString()));
+			primaryStage.getIcons().add(new Image(ClassLoader.getSystemResourceAsStream("dna.png")));
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
