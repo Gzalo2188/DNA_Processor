@@ -1,1 +1,140 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/*
+ * Author: Gonzalo Alvarado
+ */
+*{
+	-fx-primary: #344955;
+	-fx-primaryDark: #232F34;
+	-fx-primaryLight: #4A6572;
+	-fx-secondary: #F9AA33;
+	-fx-text-color: #CFD8DC;
+}
+
+.root{
+	-fx-background-color: -fx-primaryLight;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab{
+	-fx-shape: "M 200 300 L 200 200 Q 200 150 250 150 L 550 150 Q 600 150 600 200 L 600 300 Z";
+}
+.tab-header-background{
+	-fx-background-color: -fx-primaryLight;
+}
+.tab{
+	-fx-background-color: -fx-primary;
+	-fx-padding: 0 10 0 10;
+}
+.tab-pane .tab-header-area {
+    -fx-padding: 5 0 -1 0;
+}
+.tab:selected{
+	-fx-background-color: -fx-primaryDark;
+	-fx-border-color: -fx-secondary;
+	-fx-border-width: 1.5px;
+}
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+	-fx-border-color: transparent;
+}
+.tab:hover{
+	-fx-background-color: -fx-secondary;
+	-fx-border-color: -fx-secondary;
+}
+.tab-label{
+	-fx-font-size: 13;
+	-fx-text-fill: -fx-text-color;
+}
+.tab-label:hover{
+	-fx-font-size: 13;
+	-fx-text-fill: -fx-primary;
+}
+.placeholder{
+	-fx-background-color: -fx-primary;
+	-fx-text-fill: -fx-text-color;
+}
+.table{
+	-fx-background-color: -fx-primary;
+}
+.table-view{
+	-fx-focus-color: -fx-primaryDark;
+	-fx-faint-focus-color: -fx-primaryLight;
+}
+.table-cell{
+	-fx-font-size: 12;
+	-fx-text-fill: -fx-text-color;
+}
+.table-view .column-header{
+	-fx-background-color: -fx-primary;
+	-fx-border-color: black;
+	-fx-border-width: 0 1 0 0;
+	-fx-table-cell-border-color: black;
+
+}
+.table-view .column-header .arrow{
+	-fx-text-fill: -fx-text-color;
+}
+.table-view .label{
+	-fx-text-fill: -fx-text-color;
+}
+.table-row-cell{
+	-fx-table-cell-border-color: black;
+}
+.table-row:selected{
+	-fx-background-color: -fx-primaryLight;
+	-fx-selection-bar: black;
+}
+.table-row-cell:even{
+	-fx-background-color: -fx-primaryDark;
+}
+.table-row-cell:odd{
+	-fx-background-color: -fx-primary;
+}
+.table-view .scroll-bar {
+    -fx-background-color: -fx-primary;
+}
+.table-view .scroll-bar .thumb {
+    -fx-background-color: -fx-secondary;
+}
+.table-view .filler {    
+    -fx-background-color: -fx-primary;
+}
+.test-table-column{
+	-fx-alignment: CENTER;
+	-fx-text-alignment: RIGHT;
+}
+.scroll-bar:horizontal{
+	-fx-border-color: black;
+	-fx-border-width: 1 0 0 0;
+}
+.scroll-bar:vertical{
+	-fx-border-color: black;
+	-fx-border-width: 0 0 0 1;
+}
+.virtual-flow > .corner, .scroll-bar:horizontal, .scroll-bar:vertical{
+	-fx-background-color: -fx-primary;
+}
+.scroll-bar > .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-background-color: -fx-text-color;
+}
+.button{
+	-fx-border-color: -fx-secondary;
+	-fx-background-color: -fx-primary;
+	-fx-border-radius: 5px;
+	-fx-border-width: 2px;
+	-fx-background-radius: 5px;
+	-fx-text-fill: -fx-text-color;
+}
+
+.button:hover{
+	-fx-border-color: -fx-secondary;
+	-fx-background-color: -fx-secondary;
+	-fx-border-radius: 5px;
+	-fx-border-width: 2px;
+	-fx-background-radius: 5px;
+	-fx-text-fill: -fx-primary;
+}
+.text-field{
+	-fx-background-color: -fx-primary;
+	-fx-text-fill: -fx-text-color;
+	-fx-border-color: -fx-secondary;
+	-fx-border-radius: 2px;
+	-fx-border-width: 2px;
+}

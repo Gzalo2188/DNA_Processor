@@ -16,6 +16,8 @@ public class FileHandler {
 	
 	public static File fileOpenChooser() {
 		FileChooser fc = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+		fc.getExtensionFilters().add(extFilter);
 		fc.setTitle("Open File");
 		fc.setInitialDirectory(new File("."));
 		File selectedFile = fc.showOpenDialog(null);
@@ -30,12 +32,22 @@ public class FileHandler {
 	
 	public static File fileSaveChooser() {
 		FileChooser fc = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+		fc.getExtensionFilters().add(extFilter);
+		fc.setInitialFileName("*.csv");
 		fc.setTitle("Save File");
 		fc.setInitialDirectory(new File("."));
 		File selectedFile = fc.showSaveDialog(null);
 		
 		if(selectedFile != null) {
-			return selectedFile.getAbsoluteFile();
+			if(selectedFile.getName().endsWith(".csv")) {
+				return selectedFile.getAbsoluteFile();
+			}
+			else {
+				File fixedFile = new File(selectedFile.getAbsoluteFile()+".csv");
+				return fixedFile;
+			}
+			
 		}
 		else {
 			return null;
@@ -71,7 +83,7 @@ public class FileHandler {
 	
 	public static void saveData(ArrayList<DnaSequence> list) {
 		try {
-			FileWriter writer = new FileWriter(fileSaveChooser().getAbsoluteFile() + ".csv");
+			FileWriter writer = new FileWriter(fileSaveChooser().getAbsoluteFile());
 			for(int i = 0; i < list.size(); i++) {
 				if(i ==0) 
 					writer.write(list.get(i).getDna() + "," + list.get(i).getCount() + "\n");
