@@ -87,7 +87,7 @@
                            </columnResizePolicy>
                            <columns>
                               <TableColumn fx:id="unmatchedDnaCol" prefWidth="-1.0" text="DNA" />
-                              <TableColumn fx:id="unmatchedDnaCol" prefWidth="-1.0" sortType="DESCENDING" text="Count" />
+                              <TableColumn fx:id="unmatchedCountCol" prefWidth="-1.0" sortType="DESCENDING" text="Count" />
                            </columns>
                         </TableView>
                      </center>
@@ -96,7 +96,7 @@
                            <children>
                               <Button fx:id="unmatchedOpenButton" mnemonicParsing="false" onAction="#openFileChooser" prefWidth="100.0" text="Open File" HBox.hgrow="ALWAYS" />
                               <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearTable" prefWidth="100.0" text="Clear Table" />
-                              <Button fx:id="unmatchedSaveButton" mnemonicParsing="false" onAction="#saveFileChooser" prefWidth="100.0" text="Save File" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="unmatchedSaveButton" mnemonicParsing="false" onAction="#uSaveFileChooser" prefWidth="100.0" text="Save File" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </bottom>

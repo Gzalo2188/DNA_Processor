@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.ResourceBundle;
+import java.util.Set;
+
 import application.model.DnaSequence;
 import application.model.FileHandler;
 import javafx.event.ActionEvent;
@@ -24,58 +26,51 @@ import javafx.scene.control.cell.TextFieldTableCell;
 public class MainController implements EventHandler<ActionEvent>, Initializable{
 	
 	@FXML
-	private TableView<DnaSequence> table;
-	
-	@FXML TableView<DnaSequence> mutationTable;
-	
+	private TableView<DnaSequence> table, mutationTable, unmatchedTable;
     @FXML
-    private TableColumn<DnaSequence, String> dnaCol;
-    
+    private TableColumn<DnaSequence, String> dnaCol, mDnaCol, unmatchedDnaCol;
     @FXML
-    private TableColumn<DnaSequence, String> mDnaCol;
-
-    @FXML
-    private TableColumn<DnaSequence, Integer> countCol;
-    
-    @FXML
-    private TableColumn<DnaSequence, Integer> mCountCol;
-
+    private TableColumn<DnaSequence, Integer> countCol, mCountCol, unmatchedCountCol;
     @FXML
     private Button openFile;
-
     @FXML
     private Button saveFile;
-    
     @FXML
     private TextField textField;
     
     private Alert alert;
-
     private Hashtable<String, Integer> unmatchedHash;
+    private Hashtable<String, Integer> matchedHash;
+    
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
     	this.unmatchedHash = new Hashtable<String, Integer>();
+    	this.matchedHash = new Hashtable<String, Integer>();
     	// Set up columns
     	this.dnaCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, String>("dna"));
     	this.mDnaCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, String>("dna"));
     	this.countCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, Integer>("count"));
     	this.mCountCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, Integer>("count"));
-		
+    	this.unmatchedDnaCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, String>("dna"));
+    	this.unmatchedCountCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, Integer>("count"));
+    	
     	//Alignment
     	this.countCol.setStyle("-fx-alignment: CENTER;");
       	this.mCountCol.setStyle("-fx-alignment: CENTER;");
+     	this.unmatchedCountCol.setStyle("-fx-alignment: CENTER;");
       	
-    	//Alows the table to be elitable.
+    	//Allows the table to be editable.
 		this.table.setEditable(true);		
 		this.mutationTable.setEditable(true);
 		this.dnaCol.setCellFactory(TextFieldTableCell.forTableColumn());
 		this.mDnaCol.setCellFactory(TextFieldTableCell.forTableColumn());
+		this.unmatchedDnaCol.setCellFactory(TextFieldTableCell.forTableColumn());
 	}
 	@Override
 	public void handle(ActionEvent event) {
-		this.mutationTable.getItems().clear();
 		String enteredString = this.textField.getText();
 		ArrayList<DnaSequence> list = new ArrayList<DnaSequence>(this.table.getItems());
+		ArrayList<DnaSequence> unmatchedList = new ArrayList<DnaSequence>();
 
         if(this.table.getItems().size() == 0){
     		this.alert = new Alert(AlertType.INFORMATION);
@@ -101,14 +96,23 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
         				mismatch++;
         			}
         		}
-        		if(mismatch == 1){
+        		if(mismatch == 1 && !(this.matchedHash.containsKey(dna.getDna()))){
         			this.mutationTable.getItems().add(dna);
+        			this.matchedHash.put(searchedDna.getDna(), searchedDna.getCount());
         		}
         		else{
-        			this.unmatchedHash.put(searchedDna.getDna(), searchedDna.getCount());
+        			if(!(this.unmatchedHash.containsKey(dna.getDna()))){
+        				System.out.println("Added DNA: " + dna.getDna() + " : " + dna.getCount());
+        				this.unmatchedHash.put(dna.getDna(), dna.getCount());
+        				this.unmatchedHash.remove(searchedDna.getDna());
+        				unmatchedList.add(dna);
+        			}
         		}
         	}
+        	
         }
+		this.unmatchedTable.getItems().addAll(unmatchedList);
+		
 	}
 	
     public void openFileChooser(ActionEvent event) {
@@ -151,6 +155,23 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
     		alert.setContentText("Please choose a file location.");
     		alert.showAndWait();
     	}
+    }
+    public void uSaveFileChooser(ActionEvent event) {
+    	ArrayList<DnaSequence> list = new ArrayList<DnaSequence>(this.unmatchedTable.getItems());
+    	try {
+    		FileHandler.saveData(list);
+    	}
+    	catch(NullPointerException e) {
+    		this.alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("ERROR");
+    		alert.setHeaderText(null);
+    		alert.setContentText("Please choose a file location.");
+    		alert.showAndWait();
+    	}
+    }
+    public void clearTable(ActionEvent event){
+    	this.unmatchedTable.getItems().clear();
+    	this.unmatchedHash.clear();
     }
 
 }
