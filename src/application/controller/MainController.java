@@ -2,6 +2,7 @@ package application.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.ResourceBundle;
 import application.model.DnaSequence;
 import application.model.FileHandler;
@@ -50,9 +51,10 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
     
     private Alert alert;
 
-
+    private Hashtable<String, Integer> unmatchedHash;
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+    	this.unmatchedHash = new Hashtable<String, Integer>();
     	// Set up columns
     	this.dnaCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, String>("dna"));
     	this.mDnaCol.setCellValueFactory(new PropertyValueFactory<DnaSequence, String>("dna"));
@@ -86,7 +88,7 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
         	this.alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("ERROR");
     		alert.setHeaderText(null);
-    		alert.setContentText("An error has occured. The DNA squenece you enterd does not exist within this set");
+    		alert.setContentText("An error has occured. The DNA squenece you entered does not exist within this set");
     		alert.showAndWait();
         }
         else{
@@ -101,6 +103,9 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
         		}
         		if(mismatch == 1){
         			this.mutationTable.getItems().add(dna);
+        		}
+        		else{
+        			this.unmatchedHash.put(searchedDna.getDna(), searchedDna.getCount());
         		}
         	}
         }

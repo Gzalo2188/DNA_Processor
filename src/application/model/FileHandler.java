@@ -85,10 +85,17 @@ public class FileHandler {
 		try {
 			FileWriter writer = new FileWriter(fileSaveChooser().getAbsoluteFile());
 			for(int i = 0; i < list.size(); i++) {
-				if(i ==0) 
-					writer.write(list.get(i).getDna() + "," + list.get(i).getCount() + "\n");
+				String dna = "";
+				String temp = list.get(i).getDna();
+				for(int j = 0; j < temp.length(); j++){
+					dna += temp.charAt(j) + ",";
+				}
+				
+				if(i ==0){
+					writer.write(dna + list.get(i).getCount() + "\n");
+				}
 				else
-					writer.append(list.get(i).getDna() + "," + list.get(i).getCount() + "\n");
+					writer.append(dna + list.get(i).getCount() + "\n");
 			}
 			writer.close();
 		} catch (IOException e) {
