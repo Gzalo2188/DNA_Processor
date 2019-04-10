@@ -70,7 +70,6 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
 	public void handle(ActionEvent event) {
 		String enteredString = this.textField.getText();
 		ArrayList<DnaSequence> list = new ArrayList<DnaSequence>(this.table.getItems());
-		ArrayList<DnaSequence> unmatchedList = new ArrayList<DnaSequence>();
 
         if(this.table.getItems().size() == 0){
     		this.alert = new Alert(AlertType.INFORMATION);
@@ -88,7 +87,10 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
         }
         else{
         	DnaSequence searchedDna = new DnaSequence(enteredString, FileHandler.hash.get(enteredString));
-        	this.mutationTable.getItems().add(searchedDna);
+        	if(!(this.matchedHash.containsKey(searchedDna.getDna()))){
+        		this.mutationTable.getItems().add(searchedDna);
+        		this.matchedHash.put(searchedDna.getDna(), searchedDna.getCount());
+        	}
         	for(DnaSequence dna : list){
         		int mismatch = 0;
         		for(int i = 0; i < dna.getDna().length(); i++){
@@ -98,20 +100,31 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
         		}
         		if(mismatch == 1 && !(this.matchedHash.containsKey(dna.getDna()))){
         			this.mutationTable.getItems().add(dna);
-        			this.matchedHash.put(searchedDna.getDna(), searchedDna.getCount());
+        			this.matchedHash.put(dna.getDna(), dna.getCount());
         		}
         		else{
         			if(!(this.unmatchedHash.containsKey(dna.getDna()))){
-        				System.out.println("Added DNA: " + dna.getDna() + " : " + dna.getCount());
         				this.unmatchedHash.put(dna.getDna(), dna.getCount());
         				this.unmatchedHash.remove(searchedDna.getDna());
-        				unmatchedList.add(dna);
         			}
         		}
         	}
         	
         }
-		this.unmatchedTable.getItems().addAll(unmatchedList);
+
+        /**
+         * Ensures no key in the matched set are within the unmatched set
+         * This might happen because of multiple searches.
+         * */
+		Set<String> keys = this.matchedHash.keySet();
+		for(String key : keys){
+			unmatchedHash.remove(key);
+		}
+		this.unmatchedTable.getItems().clear();
+		keys = this.unmatchedHash.keySet();
+		for(String key : keys){
+			this.unmatchedTable.getItems().add(new DnaSequence(key, this.unmatchedHash.get(key)));
+		}
 		
 	}
 	
@@ -170,6 +183,8 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
     	}
     }
     public void clearTable(ActionEvent event){
+    	this.mutationTable.getItems().clear();
+    	this.matchedHash.clear();
     	this.unmatchedTable.getItems().clear();
     	this.unmatchedHash.clear();
     }
