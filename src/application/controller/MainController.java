@@ -62,6 +62,7 @@ public class MainController implements EventHandler<ActionEvent>, Initializable{
     	//Allows the table to be editable.
 		this.table.setEditable(true);		
 		this.mutationTable.setEditable(true);
+		this.unmatchedTable.setEditable(true);
 		this.dnaCol.setCellFactory(TextFieldTableCell.forTableColumn());
 		this.mDnaCol.setCellFactory(TextFieldTableCell.forTableColumn());
 		this.unmatchedDnaCol.setCellFactory(TextFieldTableCell.forTableColumn());
