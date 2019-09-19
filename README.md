@@ -17,7 +17,7 @@ If you want to build it yourself then make sure you have Eclipse, JavaFX, and Sc
 For the mutations tab you need the previous table to be populated. You can copy one of the DNA's from the previous table and paste it in the search bar to populate the table with all the single nucleotide mutations for that specific DNA.</p>
 
 <h1>Unique Instance Tab</h1>
-<p>The inque instance tab will count all the unqieue instances of a DNA sequence and count them. You can use any of the column headers to sort the data.</p>
+<p>The unique instance tab will count all the unique instances of a DNA sequence and count them. You can use any of the column headers to sort the data.</p>
 
 ![DNA Unique instanace tab](assets/DNA_Picture_001.PNG)
 
@@ -27,7 +27,7 @@ For the mutations tab you need the previous table to be populated. You can copy 
 ![mutations tab](assets/DNA_Picture_002.PNG)
 
 <h1>Unmatched Tab</h1>
-<p>After searching in the mutations tab any DNA that wasnt matched gets displayed here.</p>
+<p>The unmatched tab will be populated with any DNA that wasnt matched during the mutation process.</p>
 
 ![Unmatched tab](assets/DNA_Picture_003.PNG)
 
